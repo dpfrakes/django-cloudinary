@@ -1,0 +1,61 @@
+#message-container.api-usage {
+    background-color: #999;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+}
+#message-container.success {
+    background-color: #28a745;
+}
+#message-container.failure {
+    background-color: #dc3545;
+}
+.admin-section-container {
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* upload */
+#new-folder-name {
+    display: none;
+    width: 250px;
+}
+.cloudinary-button {
+    color: white !important;
+}
+
+/* list */
+
+/* editor */
+.cn-controls-col {
+    width: 50%;
+    float: left;
+}
+.cn-controls-col label {
+    display: block;
+    color: gray;
+    font-size: 0.75rem;
+}
+
+.cn-preview-col {
+    width: 50%;
+    float: right;
+}
+.cn-preview-col img {
+    width: 100%;
+}
+
+.cn-width-1-3 {
+    display: inline-block;
+    width: 33%;
+}
+.cn-width-2-3 {
+    display: inline-block;
+    width: 66%;
+}
+.cn-width-1-2 {
+    display: inline-block;
+    width: 45%;
+}
+
+/* TODO media breakpoints */

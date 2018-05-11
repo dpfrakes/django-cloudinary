@@ -9,12 +9,12 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static "css/cloudinary.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/django_cloudinary.css" %}">
 {% endblock %}
 
 {% block extrahead %}
     <script type="text/javascript" src="{% static "js/jquery/jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/cloudinary_admin.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/django_cloudinary.js" %}"></script>
 {% endblock extrahead %}
 
 {% block content %}
