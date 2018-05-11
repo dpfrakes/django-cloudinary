@@ -1,0 +1,133 @@
+{% extends "admin:admin/index.html" %}
+
+{% load static %}
+
+{% block title %}Cloudinary uploader | Django site admin{% endblock %}
+
+{% block bodyclass %}{% endblock %}
+{% block coltype %}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "css/cloudinary.css" %}">
+{% endblock %}
+
+{% block extrahead %}
+    <script type="text/javascript" src="{% static "js/jquery/jquery.min.js" %}"></script>
+{% endblock extrahead %}
+
+{% block content %}
+
+    <div id="message-container"></div>
+
+    <div id="upload-folder-container" class="admin-section-container">
+        <label>Cloudinary upload folder:</label>
+        <select id="cloudinary-upload-folder">
+            <option value="">(root)</option>
+            {% for folder in cloudinary_folders %}
+            <option value="{{ folder.name }}">{{ folder.path }}</option>
+            {% endfor %}
+            <option disabled></option>
+            <option value="" data-create="true">+ New folder</option>
+        </select>
+    </div>
+
+    <div id="new-folder-container" class="admin-section-container">
+        <input type="text" id="new-folder-name" />
+    </div>
+
+    <div id="upload-widget-container" class="admin-section-container">
+        <a href="#" id="upload_widget_opener"></a>
+    </div>
+
+    <script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        var $msg = $('#message-container');
+        var $selectUploadFolder = $('#cloudinary-upload-folder');
+        var $newFolderName = $('#new-folder-name');
+        var $uploadWidget = $('#upload_widget_opener');
+
+        {# https://cloudinary.com/documentation/upload_widget#signed_uploads #}
+        {# we can't use a string for signature b/c folder might change and needs to be signed/hashed #}
+        function generateSignature(cb, params) {
+            $.ajax({
+             url     : "/api/cloudinary/sign",
+             type    : "GET",
+             dataType: "text",
+             data    : params,
+             complete: function() {console.log("complete")},
+             success : function(data, textStatus, xhr) {
+                signature = JSON.parse(data)['signature']
+                cb(signature);
+            },
+             error   : function(xhr, status, error) { console.log(xhr, status, error); }
+            });
+        }
+
+        function resetWidget(directory) {
+
+            // Remove old widget
+            $('.cloudinary-button').remove();
+
+            // Reset configs
+            widgetConfig = {
+                cloud_name: '{{ cloud_name }}',
+                api_key: '{{ api_key }}',
+                dropbox_app_key: '{{ dropbox_app_key }}',
+                upload_signature: generateSignature,
+                upload_preset: '{{ upload_preset }}',
+                folder: directory || '',
+                sources: ['local', 'url', 'dropbox'],
+                multiple: true,
+                theme: 'white',
+                button_caption: 'Upload images'
+            }
+
+            // Wireup widget
+            $uploadWidget.cloudinary_upload_widget(widgetConfig, function(error, result) {
+                if(error) {
+                    console.error(error);
+                    $msg.removeClass('success').addClass('failure');
+                    $msg.text(error.message);
+                } else {
+                    console.log(result);
+                    $msg.removeClass('failure').addClass('success');
+                    $msg.text('Successfully uploaded ' + result.length + ' image(s) to ' + directory);
+                }
+            });
+
+        }
+
+        // Event Listeners
+
+        // Reset on dropdown change (or show input field for "New folder")
+        $selectUploadFolder.change(function() {
+            if ($selectUploadFolder.find(':selected').attr('data-create') == 'true') {
+                $newFolderName.show();
+            } else {
+                $newFolderName.hide();
+                resetWidget($selectUploadFolder.val());
+            }
+        });
+
+        // Reset on change to input field
+        $newFolderName.keyup(function() {
+            if(!!$newFolderName.val()) {
+                resetWidget($newFolderName.val());
+            } else {
+                resetWidget($selectUploadFolder.val());
+            }
+        });
+
+        // Reset on page load
+        $('document').ready(function() {
+            resetWidget();
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

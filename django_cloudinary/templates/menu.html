@@ -1,0 +1,26 @@
+{% extends "admin:admin/app_index.html" %}
+
+{% block title %}Cloudinary | Django site admin{% endblock %}
+
+{% block content %}
+
+<div id="cloudinary-dashboard" class="dashboard-container">
+
+    <div class="dashboard-column ui-sortable" style="float:left;width:50%;">
+        <div id="module_1" class="dashboard-module draggable collapsible deletable">
+            <h2>Cloudinary<a href="#" class="toggle-icon">Toggle</a><a href="#" class="close-icon">Close</a></h2>
+            <div class="dashboard-module-content">
+                <ul>
+                    <li><a href="/admin/cloudinary/upload/">Upload Cloudinary images</a></li>
+                    <li><a href="/admin/cloudinary/list/">List Cloudinary images</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+{% block pagination %}{% endblock %}

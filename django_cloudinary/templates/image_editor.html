@@ -1,0 +1,201 @@
+{% extends "admin:admin/index.html" %}
+
+{% load static %}
+
+{% block title %}Cloudinary editor | Django site admin{% endblock %}
+
+{% block bodyclass %}{% endblock %}
+{% block coltype %}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "css/cloudinary.css" %}">
+{% endblock %}
+
+{% block extrahead %}
+    <script type="text/javascript" src="{% static "js/jquery/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/cloudinary_admin.js" %}"></script>
+{% endblock extrahead %}
+
+{% block content %}
+
+    <div id="message-container" class="api-usage">{{ rate_limit_remaining }} of {{ rate_limit_allowed }} API calls remaning (resets at {{ rate_limit_reset_at|date:'n/j/y g:i A' }})</div>
+
+    <div class="2-col-grid">
+        <div class="cn-controls-col">
+            <h2>Resize &amp; Crop</h2>
+            <div class="cn-width-1-3">
+                <label>Width</label>
+                <input type="text" id="cn-width" />
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Height</label>
+                <input type="text" id="cn-height" />
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Mode</label>
+                <select id="cn-mode">
+                    <option value="scale" class="">Scale</option>
+                    <option value="limit" class="">Limit</option>
+                    <option value="fill" class="">Fill</option>
+                    <option value="fit" class="">Fit</option>
+                    <option value="crop" class="">Crop</option>
+                    <option value="thumb" class="image_only">Thumb</option>
+                    <option value="pad" class="">Pad</option>
+                    <option value="lfill" class="image_only">Limited Fill</option>
+                    <option value="lpad" class="">Limit &amp; Pad</option>
+                    <option value="mfit" class="image_only">Fit (Scale Up)</option>
+                    <option value="mpad" class="image_only">Pad (No Scale)</option>
+                    <option value="imagga_crop" class="image_only">Imagga crop</option>
+                    <option value="imagga_scale" class="image_only">Imagga scale</option>
+                </select>
+            </div>
+
+            <h2>Format &amp; Shape</h2>
+            <div class="cn-width-1-2">
+                <label>Format</label>
+                <select id="cn-format">
+                    <option value="">Keep format</option>
+                    <option value="__empty__">No extension, use original format</option>
+                    <option value="jpg" class="non_audio">JPG</option>
+                    <option value="png" class="non_audio">PNG</option>
+                    <option value="gif" class="non_audio">GIF</option>
+                    <option value="webp" class="image_only non_audio">WebP</option>
+                    <option value="wdp" class="image_only non_audio">JPEG XR</option>
+                    <option value="bmp" class="image_only non_audio">BMP</option>
+                    <option value="pdf" class="image_only non_audio">PDF</option>
+                    <option value="tiff" class="image_only non_audio">TIFF</option>
+                    <option value="ico" class="image_only non_audio">ICO</option>
+                    <option value="eps" class="image_only non_audio">EPS</option>
+                    <option value="mp4" class="video_only format_option">MP4 Video</option>
+                    <option value="webm" class="video_only format_option">WebM Video</option>
+                    <option value="ogv" class="video_only format_option">OGV Video</option>
+                    <option value="m3u8" class="video_only format_option">M3U8 Playlist (HLS)</option>
+                    <option value="mpd" class="video_only format_option">MPEG-DASH</option>
+                    <option value="mp3" class="video_only format_option">MP3 Audio</option>
+                    <option value="ogg" class="video_only format_option">OGG Audio</option>
+                    <option value="wav" class="video_only format_option">WAV Audio</option>
+                    <!-- <option value="auto">Auto</option> -->
+                </select>
+            </div>
+
+            <div class="cn-width-1-2">
+                <label>Quality</label>
+                <select id="cn-quality-type">
+                    <option value="">Manual</option>
+                    <!-- <option value="jpegmini">JPEGmini Best</option> -->
+                    <!-- <option value="jpegmini:1">JPEGmini High</option> -->
+                    <!-- <option value="jpegmini:2">JPEGmini Medium</option> -->
+                    <option value="auto">Auto</option>
+                    <option value="auto:best">Automatic - best quality</option>
+                    <option value="auto:good">Automatic - good quality</option>
+                    <option value="auto:eco">Automatic - economy mode</option>
+                    <option value="auto:low">Automatic - low quality</option>
+                </select>
+            </div>
+
+            <hr>
+
+            <h2>Watermark</h2>
+            <div>
+                <label>Image ID</label>
+                <input type="text" id="cn-watermark-id" />
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Width</label>
+                <input type="text" id="cn-watermark-width" />
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Height</label>
+                <input type="text" id="cn-watermark-height" />
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Mode</label>
+                <select id="cn-watermark-mode">
+                    <option value="scale" class="">Scale</option>
+                    <option value="limit" class="">Limit</option>
+                    <option value="fill" class="">Fill</option>
+                    <option value="fit" class="">Fit</option>
+                    <option value="crop" class="">Crop</option>
+                    <option value="thumb" class="image_only">Thumb</option>
+                    <option value="pad" class="">Pad</option>
+                    <option value="lfill" class="image_only">Limited Fill</option>
+                    <option value="lpad" class="">Limit &amp; Pad</option>
+                    <option value="mfit" class="image_only">Fit (Scale Up)</option>
+                    <option value="mpad" class="image_only">Pad (No Scale)</option>
+                    <option value="imagga_crop" class="image_only">Imagga crop</option>
+                    <option value="imagga_scale" class="image_only">Imagga scale</option>
+                </select>
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Gravity</label>
+                <select id="cn-watermark-gravity">
+                    <option value="">Select gravity</option>
+                    <option value="face" class="image_only">Face</option>
+                    <option value="faces" class="image_only">Faces</option>
+                    <option value="north_west" class="">North West</option>
+                    <option value="north" class="">North</option>
+                    <option value="north_east" class="">North East</option>
+                    <option value="east" class="">East</option>
+                    <option value="center" class="">Center</option>
+                    <option value="west" class="">West</option>
+                    <option value="south_west" class="">South West</option>
+                    <option value="south" class="">South</option>
+                    <option value="south_east" class="">South East</option>
+                    <option value="face:center" class="image_only">Face (Center)</option>
+                    <option value="faces:center" class="image_only">Faces (Center)</option>
+                    <option value="face:auto" class="image_only">Face (Auto)</option>
+                    <option value="faces:auto" class="image_only">Faces (Auto)</option>
+                    <option value="custom" class="image_only">Custom</option>
+                    <option value="custom:face" class="image_only">Custom (Face)</option>
+                    <option value="custom:faces" class="image_only">Custom (Faces)</option>
+                    <option value="xy_center" class="image_only">XY Center</option>
+                    <option value="adv_face" class="image_only">Advanced Face</option>
+                    <option value="adv_faces" class="image_only">Advanced Faces</option>
+                    <option value="adv_eyes" class="image_only">Advanced Eyes</option>
+                    <option value="custom:adv_face" class="image_only">Custom (Advanced Face)</option>
+                    <option value="custom:adv_faces" class="image_only">Custom (Advanced Faces)</option>
+                    <option value="ocr_text" class="image_only">OCR Detected Text</option>
+                    <option value="ocr_text:document" class="image_only">OCR Detected Text - Document</option>
+                    <option value="auto" class="image_only">Auto</option>
+                    <option value="auto:face" class="image_only">Auto Face</option>
+                    <option value="auto:faces" class="image_only">Auto Faces</option>
+                    <option value="auto:adv_face" class="image_only">Auto Advanced Face</option>
+                    <option value="auto:adv_faces" class="image_only">Auto Advanced Faces</option>
+                    <option value="auto:adv_eyes" class="image_only">Auto Advanced Eyes</option>
+                    <option value="auto:body" class="image_only">Auto Body</option>
+                    <option value="auto:no_faces" class="image_only">Auto No Faces</option>
+                    <option value="auto:custom_no_override" class="image_only">Auto Custom No Override</option>
+                    <option value="auto:none" class="image_only">Auto None</option>
+                </select>
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>X</label>
+                <input type="text" id="cn-watermark-x-offset" />
+            </div>
+
+            <div class="cn-width-1-3">
+                <label>Y</label>
+                <input type="text" id="cn-watermark-y-offset" />
+            </div>
+        </div>
+
+        <div class="cn-preview-col">
+            <img src="{{ resource.secure_url }}" title="{{ resource.public_id }}" />
+            <p>
+                <a href="{{ resource.secure_url }}" id="preview-url" class="ng-border-remove" data-original-url="{{ resource.secure_url }}">{{ resource.secure_url }}</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

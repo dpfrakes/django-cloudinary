@@ -1,0 +1,4 @@
+# django-cms
+# djangorestframework
+# requests
+# cloudinary
